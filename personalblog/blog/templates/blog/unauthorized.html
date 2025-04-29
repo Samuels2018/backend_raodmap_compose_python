@@ -1,0 +1,10 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Unauthorized{% endblock %}
+
+{% block content %}
+    <div class="alert alert-danger">
+        You are not authorized to view this page. Please login with admin credentials.
+    </div>
+    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+{% endblock %}
