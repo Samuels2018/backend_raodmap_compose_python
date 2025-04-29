@@ -1,0 +1,27 @@
+{% extends "converter/base.html" %}
+
+{% block content %}
+  <h2>Length Conversion</h2>
+  <form method="post" class="converter-form">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.input_value.label_tag }}
+      {{ form.input_value }}
+    </div>
+    <div class="form-group">
+      {{ form.input_unit.label_tag }}
+      {{ form.input_unit }}
+    </div>
+    <div class="form-group">
+      {{ form.output_unit.label_tag }}
+      {{ form.output_unit }}
+    </div>
+    <button type="submit">Convert</button>
+  </form>
+  
+  {% if converted_value %}
+  <div class="result">
+    <p>{{ original_value }} {{ original_unit }} = {{ converted_value }} {{ converted_unit }}</p>
+  </div>
+  {% endif %}
+{% endblock %}
