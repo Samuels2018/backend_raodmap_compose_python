@@ -1,0 +1,92 @@
+version: "3.9"
+services:
+  dbPostgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  dbMongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  blogging_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blogging_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - dbPostgres
+      - dbMongo
+    environment:
+      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+      MONGO_URI: mongodb://dbMongo:27017/mydb
+  expense_tracker_API:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense_tracker_API
+    ports:
+      - "8001:8000"
+    depends_on:
+      - dbPostgres
+      - dbMongo
+    environment:
+      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+      MONGO_URI: mongodb://dbMongo:27017/mydb
+  personalblog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: personalblog
+    ports:
+      - "8002:8000"
+    depends_on:
+      - dbPostgres
+      - dbMongo
+    environment:
+      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+      MONGO_URI: mongodb://dbMongo:27017/mydb
+  unitconverter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: unitconverter
+    ports:
+      - "8003:8000"
+    depends_on:
+      - dbPostgres
+      - dbMongo
+    environment:
+      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+      MONGO_URI: mongodb://dbMongo:27017/mydb
+  
+networks:
+  default:
+    driver: bridge
+volumes:
+  db_data:
+    driver: local
+  mongo_data:
+    driver: local
+  
