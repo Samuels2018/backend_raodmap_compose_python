@@ -4,8 +4,13 @@ from typing import List
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 
-from . import models, schemas, crud, auth
-from .db.db_config import SessionLocal, engine
+from models import models
+from schemas import schemas 
+from tracker import crud 
+from auth import auth
+from db import SessionLocal, engine
+from fastapi.security import OAuth2PasswordRequestForm
+
 
 models.Base.metadata.create_all(bind=engine)
 

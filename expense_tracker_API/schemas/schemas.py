@@ -16,7 +16,7 @@ class ExpenseBase(BaseModel):
   amount: float
   description: Optional[str] = None
   category: ExpenseCategory = ExpenseCategory.OTHERS
-  date: date = date.today()
+  expense_date: date = date.today()
 
 class ExpenseCreate(ExpenseBase):
   pass

@@ -11,6 +11,7 @@ from models import models
 from tracker import crud
 from db import SessionLocal
 from settings import settings
+from sqlalchemy.orm import Session
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
