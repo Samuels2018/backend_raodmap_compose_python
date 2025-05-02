@@ -7,12 +7,32 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
+      APP_USER: sam_local_code
+      APP_PASSWORD: passwd
+      POSTGRES_MULTIPLE_DATABASES: "expense_tracker,personalblog"
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - my_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  dbSqlLite:
+    image: nouchka/sqlite3:latest
+    container_name: sqlite
+    ports:
+      - "8080:8080"
+    volumes:
+      - sqlite_data:/data
+    networks:
+      - my_network
+    healthcheck:
+      test: ["CMD", "sqlite3", "/data/mydb.sqlite", ".databases"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,6 +43,8 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - my_network
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -33,49 +55,61 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./unitconverter:/app
     container_name: unitconverter
     ports:
       - "8000:8000"
+    depends_on:
+      - dbSqlLite
+    networks:
+      - default
 
   personalblog:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./personalblog:/app
     container_name: personalblog
     ports:
       - "8001:8001"
     depends_on:
       - dbPostgres
-    environment:
-      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+    networks:
+      - default
 
   expense_tracker_API:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./expense_tracker_API:/app
     container_name: expense_tracker_API
     ports:
       - "8001:8000"
     depends_on:
       - dbMongo
-    environment:
-      MONGO_URI: mongodb://dbMongo:27017/mydb
+    networks:
+      - default
 
     
   blogging_api:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./blogging_api:/app
     container_name: blogging_api
     ports:
       - "8000:8000"
     depends_on:
       - dbPostgres
-    environment:
-      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+    networks:
+      - default
   
 networks:
-  default:
+  my_network:
     driver: bridge
 volumes:
   db_data:

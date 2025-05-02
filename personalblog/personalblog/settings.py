@@ -82,7 +82,7 @@ DATABASES = {
         "NAME": os.environ.get('DATABASE_NAME', 'personalblog'), 
         "USER": os.environ.get('DATABASE_USERNAME', 'sam_local_code'),
         "PASSWORD": os.environ.get('DATABASE_PASSWORD', 'passwd'),
-        'HOST': os.environ.get('DATABASE_HOST', '127.0.0.1'),
+        'HOST': os.environ.get('DATABASE_HOST_CONTAINER', 'localhost'),
         'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
