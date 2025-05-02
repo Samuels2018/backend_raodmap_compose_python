@@ -1,6 +1,42 @@
+# 📝 Blogging Platform API
+
+Este proyecto es una API RESTful desarrollada con FastAPI que permite crear, leer, actualizar y eliminar publicaciones de blog.
 
 
-endpoint
+## ⚙️ Tecnologías utilizadas
+
+- Python
+- FastAPI
+- SQLAlchemy
+- mongodb
+- Uvicorn
+
+## 🚀 Cómo ejecutar el proyecto localmente
+
+1. Clona el repositorio y accede al directorio:
+
+```bash
+git clone https://github.com/Samuels2018/backend_raodmap_compose_python.git
+cd backend_raodmap_compose_python/blogging_api
+Crea un entorno virtual y actívalo:
+
+python -m venv venv
+source venv/bin/activate  # En Windows usa `venv\Scripts\activate`
+Instala las dependencias necesarias:
+
+pip install -r requirements.txt
+Ejecuta el servidor de desarrollo:
+
+uvicorn main:app --reload
+
+
+📚 Endpoints disponibles
+Método	Ruta	Descripción
+GET	/posts	Lista todas las publicaciones
+POST	/posts	Crea una nueva publicación
+GET	/posts/{id}	Obtiene una publicación por ID
+PUT	/posts/{id}	Actualiza una publicación por ID
+DELETE	/posts/{id}	Elimina una publicación por ID
 
 
 # http://127.0.0.1:5000/api/v1//posts
