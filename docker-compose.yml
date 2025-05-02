@@ -28,6 +28,40 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  unitconverter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: unitconverter
+    ports:
+      - "8000:8000"
+
+  personalblog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: personalblog
+    ports:
+      - "8001:8001"
+    depends_on:
+      - dbPostgres
+    environment:
+      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
+
+  expense_tracker_API:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense_tracker_API
+    ports:
+      - "8001:8000"
+    depends_on:
+      - dbMongo
+    environment:
+      MONGO_URI: mongodb://dbMongo:27017/mydb
+
+    
   blogging_api:
     build:
       context: .
@@ -37,49 +71,8 @@ services:
       - "8000:8000"
     depends_on:
       - dbPostgres
-      - dbMongo
     environment:
       DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
-      MONGO_URI: mongodb://dbMongo:27017/mydb
-  expense_tracker_API:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: expense_tracker_API
-    ports:
-      - "8001:8000"
-    depends_on:
-      - dbPostgres
-      - dbMongo
-    environment:
-      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
-      MONGO_URI: mongodb://dbMongo:27017/mydb
-  personalblog:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: personalblog
-    ports:
-      - "8002:8000"
-    depends_on:
-      - dbPostgres
-      - dbMongo
-    environment:
-      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
-      MONGO_URI: mongodb://dbMongo:27017/mydb
-  unitconverter:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: unitconverter
-    ports:
-      - "8003:8000"
-    depends_on:
-      - dbPostgres
-      - dbMongo
-    environment:
-      DATABASE_URL: postgres://postgres:password@dbPostgres:5432/mydb
-      MONGO_URI: mongodb://dbMongo:27017/mydb
   
 networks:
   default:

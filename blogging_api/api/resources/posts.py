@@ -10,7 +10,7 @@ def get_posts():
   posts = PostService.get_all_posts(search_term)
   return jsonify(posts), 200
 
-@posts_bp.route('/posts', methods=['POST'])
+@posts_bp.route('/posts/create', methods=['POST'])
 @validate_json(['title', 'content', 'category'])
 def create_post():
   data = request.get_json()

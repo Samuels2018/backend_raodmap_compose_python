@@ -99,10 +99,10 @@ def convert_weight(request):
         'converted_value': round(converted_value, 6),
         'converted_unit': output_unit,
       })
-    else:
-      form = WeightConversionForm()
+  else:
+    form = WeightConversionForm()
     
-    return render(request, 'converter/weight.html', {'form': form})
+  return render(request, 'converter/weight.html', {'form': form})
 
 def convert_temperature(request):
   if request.method == 'POST':

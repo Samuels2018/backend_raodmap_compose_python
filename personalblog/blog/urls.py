@@ -9,6 +9,7 @@ from .views import (
   user_login,
   user_logout,
   unauthorized,
+  register,
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
   path('article/new/', article_create, name='article-create'),
   path('article/<int:pk>/update/', article_update, name='article-update'),
   path('article/<int:pk>/delete/', article_delete, name='article-delete'),
+  path('register/', register, name='register'),
   path('login/', user_login, name='login'),
   path('logout/', user_logout, name='logout'),
   path('unauthorized/', unauthorized, name='unauthorized'),

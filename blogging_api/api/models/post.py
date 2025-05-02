@@ -15,6 +15,7 @@ class Post:
     
   @staticmethod
   def create(data):
+    print(f"Accessing collection: {mongo.db}")
     post = {
       'title': data['title'],
       'content': data['content'],
