@@ -7,6 +7,7 @@ class Config:
   mongo_db = os.getenv('MONGO_DB', 'blogging_platform')
   mongo_db_host_container = os.getenv('MONGO_DB_HOST_CONTAINER', 'localhost')
   mongo_db_port = os.getenv('MONGO_DB_PORT', '27017')
+  mongo_db_name_test = os.getenv('MONGO_DB_NAME_TEST', 'test_db')
   MONGO_URI = f'mongodb://{mongo_db_host_container}:{mongo_db_port}/{mongo_db}'
 
   SECRET_KEY = os.getenv('SECRET_KEY', 'supersecretkey')
